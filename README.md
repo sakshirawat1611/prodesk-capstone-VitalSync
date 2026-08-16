@@ -54,6 +54,9 @@ demonstrating cross-device layout adaptation.
 
 ## System Architecture (ERD)
 [View ERD Diagram] (https://dbdiagram.io/d/Vitalsync-6a81a1afe093539a9ec44f1f)
+
+<img width="737" height="884" alt="Vitalsync" src="https://github.com/user-attachments/assets/6aa3d9ea-b7fa-42e4-8a9f-0176163c54f1" />
+
 Four MongoDB collections: **Users** (shared identity for Doctor/Patient via a 
 `role` field), **Appointments**, **MedicalHistory**, and **Prescriptions** — 
 the latter three each reference `Users` via `doctorId` and `patientId` to 
