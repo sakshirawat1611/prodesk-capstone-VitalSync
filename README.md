@@ -64,3 +64,24 @@ enforce RBAC at the data layer.
 
 ## Future Enhancements (Post-MVP)
 - Department/Room-level organization for larger hospital structures
+
+
+## Sprint 14 — Authentication & Deployment
+
+### Backend (Node.js + Express + MongoDB)
+- User schema with bcrypt-hashed passwords (salted, never stored in plain text)
+- `/api/auth/register` and `/api/auth/login` routes, returning a signed JWT on success
+- `authMiddleware` protecting routes (e.g. `/api/profile`) — verifies JWT, rejects invalid/missing tokens
+
+### Frontend (React + Vite)
+- Login/Register form with role-aware fields
+- JWT persisted in localStorage on successful login
+- `ProtectedRoute` component — redirects unauthenticated users to `/login`
+
+### Live Deployment
+- **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
+- **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
+
+### Verification
+- Password hashing confirmed directly in MongoDB Atlas (see Screenshots/)
+- Register, login, and protected route tested via Thunder Client and live browser session

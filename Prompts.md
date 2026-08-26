@@ -58,6 +58,29 @@ a distinction I initially confused.
 
 ## Reflection
 Working this way took longer than having AI generate the PRD/wireframes/ERD 
+
+## Sprint 14 — Auth Backend & JWT Integration
+
+I used Claude as a strict mentor again for this sprint, with the same 
+approach: concepts explained before code, and I wrote/debugged everything 
+myself.
+
+- **Password hashing:** Claude explained bcrypt's salt+hash mechanism using 
+  a shredder analogy before I wrote the register route, so I understood why 
+  hashing is one-way rather than just copying the code.
+- **JWT:** Explained via a "concert wristband" analogy — verify once at 
+  login, then trust the signed token for subsequent requests instead of 
+  re-checking credentials.
+- **Debugging:** Worked through several real errors myself with Claude's 
+  guidance — a missing `router` import, an empty `User.js` model file, a 
+  MongoDB DNS/SRV connection block (fixed by switching to the standard 
+  connection string), and a database-name mismatch (`test` vs `vitalsync`).
+- **Repo structure:** Decided to keep backend and frontend inside the single 
+  existing `prodesk-capstone-VitalSync` repo (not separate repos), merging 
+  local and remote git histories with `--allow-unrelated-histories`.
+- **Deployment:** Deployed backend to Render (fixing an initial Docker 
+  vs. Node environment misconfiguration) and frontend to Vercel, then 
+  updated the frontend's API URL to point to the live backend.
 outright, but every decision in the final deliverables — topic, stack, 
 scope, schema, layout — is one I can actually explain and defend in the 
 demo, because I cross-checked suggestions with my own research and reasoned 
