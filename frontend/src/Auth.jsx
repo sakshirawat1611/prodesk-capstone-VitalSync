@@ -19,9 +19,8 @@ function Auth() {
     try {
       // pick the right backend address based on mode
       const url = isLogin
-        ? 'http://localhost:5000/api/auth/login'
-        : 'http://localhost:5000/api/auth/register';
-
+      ? 'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/auth/login'
+      : 'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/auth/register';
       // pick what data to send (Register also needs name)
       const body = isLogin
         ? { email, password }
