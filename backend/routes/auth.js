@@ -21,10 +21,13 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // build the new user record, using the SCRAMBLED password
+    // role is always hardcoded to 'patient' here — doctors are pre-seeded
+    // manually and never self-register through this route
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
+      role: 'patient',
     });
 
     //  save it to MongoDB
@@ -62,7 +65,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-res.status(200).json({ message: 'Login successful', token });
+    res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

@@ -1,10 +1,10 @@
 // bring in the Mongoose toolbox
 const mongoose = require('mongoose');
 
-//define the blueprint for what a "user" document must contain
+// define the blueprint for what a "user" document must contain
 const userSchema = new mongoose.Schema({
   name: {
-    type: String,      // must be text(example: "John Doe")
+    type: String,      // must be text (example: "John Doe")
     required: true,    // cannot be left blank
   },
   email: {
@@ -16,8 +16,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,     // this will hold the HASHED password, never the real one
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ['doctor', 'patient'],   // only these two exact values are allowed
+  },
 });
 
-//  turn the blueprint into a real, usable Model named "User",
+// turn the blueprint into a real, usable Model named "User",
 // and make it available to other files (like auth.js) that need it
 module.exports = mongoose.model('User', userSchema);
