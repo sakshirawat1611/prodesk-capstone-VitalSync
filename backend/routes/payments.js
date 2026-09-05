@@ -21,8 +21,8 @@ router.post('/create-checkout-session', authMiddleware, async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:5173/success',
-      cancel_url: 'http://localhost:5173/dashboard',
+      success_url: 'https://prodesk-capstone-vital-sync-sooty.vercel.app/success',
+      cancel_url: 'https://prodesk-capstone-vital-sync-sooty.vercel.app/dashboard',
     });
 
     res.status(200).json({ url: session.url });
