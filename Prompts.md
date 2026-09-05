@@ -85,3 +85,27 @@ outright, but every decision in the final deliverables — topic, stack,
 scope, schema, layout — is one I can actually explain and defend in the 
 demo, because I cross-checked suggestions with my own research and reasoned 
 through trade-offs rather than accepting a generated answer.
+
+## Sprint 15 — REST API CRUD, Data Ownership & Stripe
+
+Same mentor approach as before: concepts first, I implemented and debugged.
+
+- **Ownership logic:** Reasoned through the 403-rejection flow before coding 
+  — compare `req.userId` (from JWT) against the appointment's stored 
+  `doctorId`/`patientId`, reject mismatches. Verified with real tests: 
+  correct owner → 200, unrelated user → 403.
+- **Schema migration:** Added `role` (enum: doctor/patient) to the existing 
+  User model. Discussed why an enum beats an open string field — rejects 
+  bad data at save time instead of causing silent bugs later.
+- **CRUD built:** Appointments POST/GET/PUT/DELETE, all ownership-checked. 
+  `patientId` is always set server-side from the JWT, never trusted from 
+  client input, to prevent booking "as" another user.
+- **Optimistic UI:** Claude explained the concept (act on assumed success 
+  before confirmation) before I implemented instant-removal on delete via 
+  `setAppointments(prev => prev.filter(...))`.
+- **Stripe:** Built a backend-only checkout session endpoint (Secret Key 
+  never touches React, same reasoning as JWT_SECRET). Tested full flow 
+  live with Stripe's test card through to a working success redirect.
+- **Debugging:** Fixed a `dotenv.config()` ordering bug — it was called 
+  after other `require()`s that needed env vars already loaded, causing 
+  Stripe's SDK to throw "apiKey not provided."
