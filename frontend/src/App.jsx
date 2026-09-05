@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Auth from './Auth';
 import Dashboard from './Dashboard';
+import Success from './Success';
 import ProtectedRoute from './ProtectedRoute';
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/success" element={<Success />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

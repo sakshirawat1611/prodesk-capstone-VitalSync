@@ -59,10 +59,25 @@ function Dashboard() {
     }
   };
 
+  const handleUpgrade = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:5000/api/payments/create-checkout-session',
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error('Failed to start checkout', error);
+    }
+  };
+
   return (
     <div>
       <h2>Dashboard</h2>
       <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleUpgrade}>Upgrade to Pro</button>
 
       <h3>Your Appointments</h3>
       {appointments.map((appt) => (

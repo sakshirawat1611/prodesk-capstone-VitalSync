@@ -1,19 +1,20 @@
+// read secrets from .env FIRST, before anything else needs them
+require('dotenv').config();
+
 // bring in the tools
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authMiddleware = require('./middleware/authMiddleware');
-require('dotenv').config(); // read secrets from .env
 const appointmentRoutes = require('./routes/appointments');
-
-
+const paymentRoutes = require('./routes/payments');
 const authRoutes = require('./routes/auth'); // get auth routes
 
 const app = express(); // create the server
 
-app.use(cors()); // allow React to talk to thiss server
+app.use(cors()); // allow React to talk to this server
 app.use(express.json()); // understand json data sent to us
-
+app.use('/api/payments', paymentRoutes);
 app.use('/api/auth', authRoutes); // send /api/auth/* requests to auth.js
 app.use('/api/appointments', appointmentRoutes);
 app.get('/api/profile', authMiddleware, async (req, res) => {
