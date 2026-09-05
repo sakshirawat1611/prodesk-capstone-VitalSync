@@ -85,3 +85,37 @@ enforce RBAC at the data layer.
 ### Verification
 - Password hashing confirmed directly in MongoDB Atlas (see Screenshots/)
 - Register, login, and protected route tested via Thunder Client and live browser session
+
+## Sprint 15 — REST API CRUD, Data Ownership & Monetization
+
+### Backend (Node.js + Express + MongoDB)
+- Full CRUD on Appointments: `POST`, `GET` (list + single), `PUT`, `DELETE` 
+  — all protected by JWT and ownership checks
+- Data ownership enforced server-side: `patientId` always set from the 
+  decoded JWT (never trusted from client input); `GET`/`PUT`/`DELETE` 
+  compare the document's `doctorId`/`patientId` against the requester's 
+  ID, rejecting mismatches with `403 Forbidden`
+- `User` schema extended with a `role` field (`doctor` / `patient`, 
+  enum-restricted)
+- Stripe (test mode) checkout session endpoint — Secret Key stays 
+  backend-only, never exposed to the client
+
+### Frontend (React + Vite)
+- Dashboard fetches and displays the logged-in user's appointments 
+  (filtered server-side by role)
+- Optimistic UI on delete — the item is removed from the screen instantly, 
+  before the API call resolves
+- Role-based rendering — the Delete button only appears for Doctors, since 
+  Patients are never authorized to delete
+- "Upgrade to Pro" button redirects to Stripe Checkout; a `/success` route 
+  handles the post-payment redirect
+
+### Verification
+- Ownership checks tested both ways: correct owner → `200`, unrelated 
+  user → `403` (verified for GET, PUT, and DELETE)
+- Stripe checkout tested end-to-end with Stripe's official test card, 
+  confirming a working redirect to the success page
+
+### Live Deployment
+- **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
+- **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
