@@ -3,10 +3,22 @@ const router = express.Router();
 const Appointment = require('../models/Appointment');
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/User');
+const { z } = require('zod');
+
+const appointmentSchema = z.object({
+  doctorId: z.string(),
+  date: z.string(),
+  time: z.string(),
+});
 
 // CREATE — Patient books a new appointment
 router.post('/', authMiddleware, async (req, res) => {
   try {
+    const result = appointmentSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ message: 'Invalid input' });
+    }
+
     const { doctorId, date, time } = req.body;
 
     const newAppointment = new Appointment({
@@ -42,7 +54,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
 });
 
-// read:Get a single appointment by ID, with ownership check
+// read: Get a single appointment by ID, with ownership check
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
@@ -61,6 +73,9 @@ router.get('/:id', authMiddleware, async (req, res) => {
 
     res.status(200).json(appointment);
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -90,6 +105,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
 
     res.status(200).json(appointment);
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -113,6 +131,9 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 
     res.status(200).json({ message: 'Appointment deleted successfully' });
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: 'Invalid ID format' });
+    }
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
