@@ -152,3 +152,34 @@ enforce RBAC at the data layer.
 ### Live Deployment
 - **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
 - **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
+
+## Sprint 17 — Production Deployment: CORS, MongoDB Access & Env Variables
+
+### Backend (Node.js + Express + MongoDB)
+- Added a proper `"start": "node index.js"` script to `package.json` for 
+  standard cloud-host boot compatibility
+- Confirmed MongoDB Atlas Network Access allows `0.0.0.0/0`, required since 
+  Render's cloud infrastructure doesn't have a fixed IP address
+- Hardened CORS from an open `cors()` to `cors({ origin: 'https://prodesk-capstone-vital-sync-sooty.vercel.app' })` 
+  — the API now only accepts browser requests from the live frontend, 
+  rejecting all other origins including `localhost`
+
+### Frontend (React + Vite)
+- Added `VITE_API_URL` as an environment variable on Vercel, plus a local 
+  `.env` file for development
+- Replaced all hardcoded backend URLs in `Auth.jsx` and `Dashboard.jsx` 
+  with `import.meta.env.VITE_API_URL`, so the API address is defined once 
+  instead of repeated across every request
+
+### Verification
+- Confirmed via Thunder Client that the API still accepts non-browser 
+  requests after CORS hardening
+- Confirmed via live browser session that the actual frontend still logs 
+  in and loads data successfully post-CORS-hardening
+- Confirmed via Chrome DevTools Network tab that live requests correctly 
+  resolve to the Render backend URL through the environment variable, with 
+  no broken or `undefined` URLs
+
+### Live Deployment
+- **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
+- **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
