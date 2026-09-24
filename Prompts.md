@@ -134,3 +134,36 @@ write the code myself, then reviewed every file I wrote before I moved on.
 Every file — `auth.js`, `appointments.js`, `ai.js`, `index.js` — went 
 through multiple rounds of Claude reviewing what I wrote and correcting 
 mistakes, rather than writing it for me.
+
+
+## Sprint 17 — Production Deployment: CORS, MongoDB Access & Env Variables
+
+Same mentor approach: Claude explained each concept first and asked me to 
+make the change myself, reviewing every file before I moved on.
+
+- **Boot script:** Claude had me check `package.json` myself rather than 
+  assuming — found the spec's example (`server.js`) didn't match my actual 
+  entry file (`index.js`), so I wrote a corrected `"start"` script matching 
+  my real filename.
+- **MongoDB whitelisting:** Claude explained why Render's shared cloud IPs 
+  can't be pinned to a fixed whitelist entry, and why `0.0.0.0/0` combined 
+  with a password-protected connection string is the standard fix. We 
+  checked Atlas together and found this was already configured from earlier 
+  work — nothing new needed.
+- **CORS hardening:** Claude explained the security risk of open CORS 
+  (any website could send requests to my API) before I edited `index.js` 
+  myself, locking it to my live Vercel URL only. Verified two ways: Thunder 
+  Client still worked (non-browser, CORS-exempt), and the actual live 
+  frontend still logged in successfully through the real browser UI.
+- **Environment variables:** Claude had me find every hardcoded backend URL 
+  myself using `findstr`, rather than guessing which files needed fixing. 
+  Found 5 instances across `Auth.jsx` and `Dashboard.jsx`. Claude explained 
+  why the env variable should store only the base URL, not full paths, 
+  before I rewrote each request myself using `import.meta.env.VITE_API_URL`.
+- **Verification:** Claude had me confirm the fix in Chrome DevTools' 
+  Network tab myself — checking the actual Request URL resolved correctly 
+  to the live Render backend, rather than just assuming it worked because 
+  the page loaded.
+
+Every file — `package.json`, `index.js`, `Auth.jsx`, `Dashboard.jsx` — was 
+edited by me and reviewed by Claude for correctness, not written for me.
