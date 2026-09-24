@@ -109,3 +109,28 @@ Same mentor approach as before: concepts first, I implemented and debugged.
 - **Debugging:** Fixed a `dotenv.config()` ordering bug — it was called 
   after other `require()`s that needed env vars already loaded, causing 
   Stripe's SDK to throw "apiKey not provided."
+
+## Sprint 16 — Code Freeze: Validation, AI Endpoint & Rate Limiting
+
+Same mentor approach: Claude explained each concept first and asked me to 
+write the code myself, then reviewed every file I wrote before I moved on.
+
+- **Validation:** Claude explained why Zod checks data *before* Mongoose 
+  ever sees it, then had me write the schemas myself for `auth.js` and 
+  `appointments.js` line by line, reviewing each version I pasted back 
+  until it was correct. Same for `CastError` handling on the ID-based 
+  appointment routes.
+- **AI endpoint:** Claude walked me through building `ai.js` piece by 
+  piece — imports, schema, the route itself — checking my code at each 
+  step. Helped debug a 404 when Google retired the model I first used, 
+  swapping to a current one.
+- **Rate limiting:** Claude explained the concept with a phone-lock analogy, 
+  then reviewed my `index.js` changes multiple times, catching an ordering 
+  bug (middleware must run before the route it protects) before it shipped.
+- **Console.log audit:** Claude had me search my own codebase with 
+  `findstr` rather than guessing, then reviewed the results together to 
+  confirm nothing needed removing.
+
+Every file — `auth.js`, `appointments.js`, `ai.js`, `index.js` — went 
+through multiple rounds of Claude reviewing what I wrote and correcting 
+mistakes, rather than writing it for me.

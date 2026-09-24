@@ -119,3 +119,36 @@ enforce RBAC at the data layer.
 ### Live Deployment
 - **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
 - **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
+
+## Sprint 16 — Code Freeze: Validation, AI Endpoint & Rate Limiting
+
+### Backend (Node.js + Express + MongoDB)
+- Schema validation added on `auth.js` (`registerSchema`, `loginSchema`) 
+  and the appointments POST route (`appointmentSchema`) using Zod — all 
+  incoming `req.body` payloads are checked with `safeParse` before 
+  touching the database, returning a clean `400 Bad Request` on invalid input
+- `CastError` handling added to the ID-based appointment routes 
+  (`GET`/`PUT`/`DELETE /:id`) — a malformed MongoDB ID now returns a clean 
+  `400` instead of crashing with a raw `500`
+- New server-side AI microservice: `POST /api/ai/suggest` — auth-protected, 
+  Zod-validated, calls Google's Gemini API (`@google/generative-ai`) to 
+  rewrite user-submitted text professionally; API key stays server-side in 
+  `.env`, never exposed to the React client
+- Rate limiting via `express-rate-limit`: `/api/auth/login` capped at 5 
+  requests per 15 minutes, `/api/ai/suggest` capped at 20 per 15 minutes
+- Codebase swept for stray `console.log` statements — none found outside 
+  3 legitimate startup/DB-connection logs in `index.js`, kept intentionally
+
+### Verification
+- Validation tested on both routes: malformed input → `400`, valid data → 
+  successfully created/logged in
+- Invalid MongoDB ID tested on `GET`/`PUT`/`DELETE /:id` → clean `400` 
+  instead of a server crash
+- AI endpoint tested end-to-end, both locally and on the live Render 
+  deployment, returning a properly rewritten response
+- Login rate limit tested directly — 6th consecutive attempt correctly 
+  blocked with "Too many requests"
+
+### Live Deployment
+- **Backend (Render):** https://prodesk-capstone-vitalsync-q5cm.onrender.com
+- **Frontend (Vercel):** https://prodesk-capstone-vital-sync-sooty.vercel.app
