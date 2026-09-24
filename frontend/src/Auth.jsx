@@ -19,8 +19,8 @@ function Auth() {
     try {
       // pick the right backend address based on mode
       const url = isLogin
-      ? 'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/auth/login'
-      : 'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/auth/register';
+      ? `${import.meta.env.VITE_API_URL}/api/auth/login`
+      : `${import.meta.env.VITE_API_URL}/api/auth/register`;
       // pick what data to send (Register also needs name)
       const body = isLogin
         ? { email, password }

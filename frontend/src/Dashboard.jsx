@@ -10,7 +10,7 @@ function Dashboard() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/appointments',
+          `${import.meta.env.VITE_API_URL}/api/appointments`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setAppointments(response.data);
@@ -27,7 +27,7 @@ function Dashboard() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/profile',
+          `${import.meta.env.VITE_API_URL}/api/profile`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setUserRole(response.data.role);
@@ -51,7 +51,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/appointments/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/appointments/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (error) {
@@ -63,7 +63,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'https://prodesk-capstone-vitalsync-q5cm.onrender.com/api/payments/create-checkout-session',
+        `${import.meta.env.VITE_API_URL}/api/payments/create-checkout-session`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
